@@ -150,7 +150,7 @@ class BaseVectorOperation(Operation):
     def database_forwards(self, app_label, schema_editor, from_state,
                           to_state):
 
-        model = from_state.render().get_model(app_label, self.name)
+        model = from_state.apps.get_model(app_label, self.name)
         vector_field = model._meta.get_field_by_name(self.fts_vector)[0]
         schema_editor.execute(self.forward_fn(
             model,
@@ -281,7 +281,7 @@ class CreateFTSIndexOperation(BaseVectorOperation):
                           to_state):
         # print(dir(from_state))
         # django 1.8 doesn't have ProjectState.render()
-        model = from_state.render().get_model(app_label, self.name)
+        model = from_state.apps.get_model(app_label, self.name)
         vector_field = model._meta.get_field_by_name(self.fts_vector)[0]
         if not isinstance(vector_field, TSVectorField):
             raise AttributeError
