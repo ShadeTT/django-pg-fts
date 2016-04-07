@@ -24,7 +24,7 @@ class PgFtsSQL(object):
 
     sql_create_trigger = """
 DROP TRIGGER IF EXISTS {model}_{fts_name}_update ON {model};
-CREATE FUNCTION {model}_{fts_name}_update() RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION {model}_{fts_name}_update() RETURNS TRIGGER AS $$
 BEGIN
     IF TG_OP = 'INSERT' THEN
         new.{fts_name} = {vectors};
