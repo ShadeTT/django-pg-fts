@@ -23,6 +23,7 @@ class PgFtsSQL(object):
                           "DROP FUNCTION {model}_{fts_name}_update()")
 
     sql_create_trigger = """
+DROP TRIGGER IF EXISTS {model}_{fts_name}_update ON {model};
 CREATE FUNCTION {model}_{fts_name}_update() RETURNS TRIGGER AS $$
 BEGIN
     IF TG_OP = 'INSERT' THEN
